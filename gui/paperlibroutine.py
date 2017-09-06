@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'paperlibroutine.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.dev1706151807
+# Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(710, 403)
+        MainWindow.resize(710, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -49,25 +49,33 @@ class Ui_MainWindow(object):
         self.tab_students.setObjectName("tab_students")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.tab_students)
         self.gridLayout_4.setObjectName("gridLayout_4")
+        self.lbl_common_info = QtWidgets.QLabel(self.tab_students)
+        self.lbl_common_info.setText("")
+        self.lbl_common_info.setObjectName("lbl_common_info")
+        self.gridLayout_4.addWidget(self.lbl_common_info, 0, 0, 1, 1)
+        self.btn_clipboard_save = QtWidgets.QPushButton(self.tab_students)
+        self.btn_clipboard_save.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.btn_clipboard_save.setObjectName("btn_clipboard_save")
+        self.gridLayout_4.addWidget(self.btn_clipboard_save, 2, 4, 1, 1)
         self.table_students_view = QtWidgets.QTableView(self.tab_students)
         self.table_students_view.setObjectName("table_students_view")
-        self.gridLayout_4.addWidget(self.table_students_view, 0, 0, 1, 4)
+        self.gridLayout_4.addWidget(self.table_students_view, 1, 0, 1, 5)
+        self.btn_clipboard_open = QtWidgets.QPushButton(self.tab_students)
+        self.btn_clipboard_open.setObjectName("btn_clipboard_open")
+        self.gridLayout_4.addWidget(self.btn_clipboard_open, 3, 4, 1, 1)
         self.btn_save = QtWidgets.QPushButton(self.tab_students)
         self.btn_save.setMaximumSize(QtCore.QSize(80, 16777215))
         self.btn_save.setObjectName("btn_save")
-        self.gridLayout_4.addWidget(self.btn_save, 1, 3, 1, 1)
-        self.btn_back_choosing = QtWidgets.QPushButton(self.tab_students)
-        self.btn_back_choosing.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.btn_back_choosing.setObjectName("btn_back_choosing")
-        self.gridLayout_4.addWidget(self.btn_back_choosing, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.btn_save, 2, 3, 2, 1)
         self.btn_change = QtWidgets.QPushButton(self.tab_students)
         self.btn_change.setMaximumSize(QtCore.QSize(120, 16777215))
         self.btn_change.setObjectName("btn_change")
-        self.gridLayout_4.addWidget(self.btn_change, 1, 2, 1, 1)
+        self.gridLayout_4.addWidget(self.btn_change, 2, 2, 2, 1)
+        self.btn_back_choosing = QtWidgets.QPushButton(self.tab_students)
+        self.btn_back_choosing.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.btn_back_choosing.setObjectName("btn_back_choosing")
+        self.gridLayout_4.addWidget(self.btn_back_choosing, 2, 1, 2, 1)
         self.tab_widget.addTab(self.tab_students, "")
-        self.tab = QtWidgets.QWidget()
-        self.tab.setObjectName("tab")
-        self.tab_widget.addTab(self.tab, "")
         self.verticalLayout.addWidget(self.tab_widget)
         self.gridLayout_2.addLayout(self.verticalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -85,16 +93,17 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Библиотечная рутина 451F"))
         self.lbl_path_caption.setText(_translate("MainWindow", "Исходная директория"))
         self.btn_file_dialog.setText(_translate("MainWindow", "..."))
         self.btn_start_reading.setText(_translate("MainWindow", "Далее"))
         self.tab_widget.setTabText(self.tab_widget.indexOf(self.tab_files), _translate("MainWindow", "Файлы"))
+        self.btn_clipboard_save.setText(_translate("MainWindow", "В буфер обмена"))
+        self.btn_clipboard_open.setText(_translate("MainWindow", "Из буфера обмена"))
         self.btn_save.setText(_translate("MainWindow", "Сохранить"))
-        self.btn_back_choosing.setText(_translate("MainWindow", "Назад"))
         self.btn_change.setText(_translate("MainWindow", "Изменить общее"))
+        self.btn_back_choosing.setText(_translate("MainWindow", "Назад"))
         self.tab_widget.setTabText(self.tab_widget.indexOf(self.tab_students), _translate("MainWindow", "Студенты"))
-        self.tab_widget.setTabText(self.tab_widget.indexOf(self.tab), _translate("MainWindow", "Страница"))
 
 
 if __name__ == "__main__":
