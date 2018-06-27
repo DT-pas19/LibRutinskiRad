@@ -1,3 +1,5 @@
+# @see https://docxtpl.readthedocs.io/en/latest/#introduction
+
 import os
 import re
 import shutil
@@ -188,7 +190,10 @@ def read_data(folder: str, files: List[str]) -> List[Work]:
                     discipline_raw = discipline_raw[discipline_span[0]:discipline_span[1]]
                 discipline_parts = re.split('[^\w\d.]{1,5}', discipline_raw)
                 discipline_code = discipline_parts[0]
-                discipline = discipline_parts[1]
+                if len(discipline_parts) < 2:
+                    discipline = ''
+                else:
+                    discipline = discipline_parts[1]
 
             if profile_raw != str():
                 profile = remove_keywords(profile_raw, key_words)
