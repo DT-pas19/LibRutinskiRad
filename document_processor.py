@@ -199,7 +199,9 @@ def read_data(folder: str, files: List[str]) -> List[Work]:
                 profile = remove_keywords(profile_raw, key_words)
                 study_raw = remove_keywords(study_raw, key_words).strip()
 
-                group_code_span = re.search('(\d{1,2}\.?){3}', study_raw).span()
+                group_regex_fnd = re.search('(\d{1,2}\.?){3}', study_raw)
+
+                group_code_span = (0,0) if group_regex_fnd is None else group_regex_fnd.span()
                 group_code = study_raw[group_code_span[0]:group_code_span[1]]
                 study_i = study_raw[group_code_span[1]:].strip()
                 study = (group_code, study_i)
