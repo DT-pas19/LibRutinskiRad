@@ -118,7 +118,7 @@ class Program(QtWidgets.QMainWindow):
             self.common_info = cache
 
         data_desc = 'Преподаватель {teacher_duty} {teacher}\nТема {topic:.50}\n' \
-                    'Тип работы {work_type}\nГод {year}\nГруппа {group}\n' \
+                    'Тип работы {work_type}\nГод {year}\nГруппа {group:.25}\n' \
                     '\nКод группы {group_code}\nФакультет {faculty:.50}\nКафедра {chair:.50}'\
             .format(**cache)
         self.ui.lbl_common_info.setText(data_desc)
