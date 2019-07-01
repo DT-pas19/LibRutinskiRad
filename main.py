@@ -1,18 +1,18 @@
-from docx import Document, text
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import QMimeData
+from gui.gui import Program
 
 if __name__ == "__main__":
-    document = Document('data/162117_б-МЕТЛипу11_2017_7.docx')
-    first_page_text = []
-    for p in document.paragraphs[:50]:
-        first_page_text.append(p.text)
+    def set_clipboard(clipboard_data: str):
+        if not isinstance(clipboard_data, str) or len(clipboard_data) == 0:
+            return
+        mime_data = QMimeData()
+        mime_data.setHtml(clipboard_data)
+        app.clipboard().setMimeData(mime_data)
 
-    # чтение первой страницы, определение, есть ли титульник
-    print()
-
-    'Выполнил'
-
-    list(filter(lambda x: len(x) > 0, first_page_text))  # 17-20 первых
-
-
-    # перемещение неиспользуемых файлов, преобразование имен файлов, формирование таблиц
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = Program()
+    MainWindow.show()
+    sys.exit(app.exec_())
 
