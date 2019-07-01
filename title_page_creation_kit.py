@@ -29,7 +29,7 @@ def make_title_page(work: Work, common_info: Dict[str, str]) -> Tuple[str, Docum
     persons_paragraph = list()
     caption_paragraphs.append(document.add_paragraph('Министерство образования и науки Российской Федерации'))
     caption_paragraphs.append(document.add_paragraph('Федеральное государственное бюджетное учреждение'))
-    caption_paragraphs.append(document.add_paragraph('высшего профессионального образования'))
+    caption_paragraphs.append(document.add_paragraph('высшего образования'))
     caption_paragraphs.append(document.add_paragraph(quote(__university__)))
     caption_paragraphs.append(document.add_paragraph())
 

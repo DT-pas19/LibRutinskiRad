@@ -296,7 +296,7 @@ def get_common_info(works: List[Work]):
 def save_changes(works: List[Work], common_info: Dict[str, str], dir_path: str, change_title_pages: bool = False, call_dialog_method = lambda path, student: QMessageBox.Yes):
     """
     Создание титульных страниц
-    :param works: рабоыт
+    :param works: работы
     :param common_info: общая информация о работах
     :param dir_path: исходная директория
     :param change_title_pages: флаг перезаписи титульников
@@ -329,7 +329,9 @@ def save_changes(works: List[Work], common_info: Dict[str, str], dir_path: str, 
             define_line_links(work, first_page_contents)
         if work.has_changed and change_title_pages:
             old_title_page_end_pos = max(work.lines.values()) if max(work.lines.values()) > 1 else 0  # work.lines['year']
-            new_report_document = insert_title_page(title_page_document=title_page_document, main_document=report_document, replace_start_point=old_title_page_end_pos)
+            new_report_document = insert_title_page(title_page_document=title_page_document,
+                                                    main_document=report_document,
+                                                    replace_start_point=old_title_page_end_pos)
             # font = new_report_document.styles['Normal'].font
             # font.name = 'Times New Roman'
         report_document_new_path = os.path.join(folder_path, document_title)

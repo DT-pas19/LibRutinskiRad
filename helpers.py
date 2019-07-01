@@ -76,6 +76,7 @@ def insert_title_page(title_page_document: Document, main_document: Document, re
     :param replace_start_point: точка, до которой следует заменять текст
     :return:
     """
+
     if not isinstance(replace_start_point, int):
         return
     replace_start_point = 0 if replace_start_point < 0 else replace_start_point

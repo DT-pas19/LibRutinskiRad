@@ -1,12 +1,11 @@
 import os
 from typing import Dict
 
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import QMimeData
 from PyQt5.QtWidgets import QFileDialog, QHeaderView, QMessageBox
 
 from document_processor import read_data, get_common_info, save_changes
-from gui.common_options_dialog import Ui_Dialog
 from gui.dialog_wrapper import DialogWrapper
 from gui.paperlibroutine import Ui_MainWindow
 from table_models import FileCheckModel, WorkInfoModel
@@ -190,34 +189,33 @@ class Program(QtWidgets.QMainWindow):
     def clipboard_copy(self):
         print('Копируем в буфер обмена')
         clipboard_data = self.work_info_model.copy()
+
         if len(clipboard_data) == 0:
             return
-        mimeData = QMimeData()
-        mimeData.setText(clipboard_data)
-        mimeData.setHtml(clipboard_data)
-        app.clipboard().setMimeData(mimeData)
+
+        mime_data = QMimeData()
+        mime_data.setText(clipboard_data)
+        mime_data.setHtml(clipboard_data)
+        app.clipboard().setMimeData(mime_data)
 
     def clipboard_paste(self):
-        mimeData = app.clipboard().mimeData()
-        data = mimeData.html() if mimeData.hasHtml() else mimeData.text()
+        mime_data = app.clipboard().mimeData()
+        data = mime_data.html() if mime_data.hasHtml() else mime_data.text()
         self.work_info_model.paste(data)
+
         if len(self.work_info_model.items) > 0:
             group_info = get_common_info(self.work_info_model.items)
             cache = self.render_common_info(group_info)
             self.common_info = cache
-            # self.work_info_model.touch()
 
-# таблица на стр 2
-# имя студента | файл | тема работы | факультет
-# тема | вид работы | год | специальность | факультет
 
 if __name__ == "__main__":
     def set_clipboard(clipboard_data: str):
         if not isinstance(clipboard_data, str) or len(clipboard_data) == 0:
             return
-        mimeData = QMimeData()
-        mimeData.setHtml(clipboard_data)
-        app.clipboard().setMimeData(mimeData)
+        mime_data = QMimeData()
+        mime_data.setHtml(clipboard_data)
+        app.clipboard().setMimeData(mime_data)
 
     import sys
     app = QtWidgets.QApplication(sys.argv)
