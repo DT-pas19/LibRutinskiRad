@@ -1,0 +1,20 @@
+<RCC>
+  <qresource prefix="refresh">
+    <file>view-refresh.svg</file>
+  </qresource>
+  <qresource prefix="clipboard">
+    <file>edit-paste.svg</file>
+    <file>edit-copy.svg</file>
+  </qresource>
+  <qresource prefix="actions">
+    <file>document-edit.svg</file>
+    <file>document-save.svg</file>
+  </qresource>
+  <qresource prefix="direction">
+    <file>go-previous.svg</file>
+    <file>go-next.svg</file>
+  </qresource>
+  <qresource prefix="open">
+    <file>folder-open.svg</file>
+  </qresource>
+</RCC>

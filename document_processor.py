@@ -11,13 +11,14 @@ from typing import List, Dict, Tuple
 
 from PyQt5.QtWidgets import QMessageBox
 from docx import Document
+from pip._internal.utils.misc import file_contents
 
 from document_structure import Work
 from helpers import remove_keywords, get_bracket_less_line, replace_whitespace, insert_title_page
 from title_page_creation_kit import make_title_page
 
 key_words = {'group': 'групп', 'faculty': 'факультет', 'chair': 'кафедра', 'topic': ('на тему', 'тема'), 'student': ('выполнил', 'студент'), 'qual': ('квалификация', 'степень'), 'profile': 'профиль', 'variant': 'вариант', 'discipline': 'дисциплин', 'study': ('направлени', 'подготовки')}
-
+numbered_filename_regexr = '\d{4,}_[бсма]-[А-Я]{3,5}\d{2,}_\d{4}_\d{1,2}_\d{1,2}'
 
 def get_paragraph(key: str, text: List[str], include_next: Tuple[bool, int]=(False, 0)) -> str:
     """ модифицировать для tuple, получать доп поля
@@ -66,6 +67,43 @@ def get_line(substr: str, text: List[str]) -> int:
         line_number = next(iter(line_info))
     return line_number
 
+# TODO refresh file list button, filename change, manual
+
+
+def get_associated_works(files: List[str], contents: List[str]):
+    work_groups = []
+
+    for document_filename in files:
+        group = get_associated_work_filenames(document_filename, contents)
+        work_groups.append(group)
+
+    return work_groups
+
+
+def get_associated_work_filenames(document_filename: str, contents: List[str]):
+    local_document_filename = os.path.split(document_filename)[-1]
+    extensionless_filename = os.path.splitext(local_document_filename)[0]
+    file_group = []
+    equally_named_files = [filename for filename in contents
+                           if extensionless_filename == os.path.splitext(filename)[0] and not filename.endswith('.docx')]
+
+    if re.match(numbered_filename_regexr, extensionless_filename):
+        base_document_filename = '_'.join(extensionless_filename.split('_')[:-1])
+        same_prefix_filenames = [filename for filename in contents
+                                 if os.path.splitext(filename)[0].startswith(base_document_filename)
+                                 and not filename.endswith('.docx')]
+        file_group.extend(same_prefix_filenames)
+    else:
+        file_group.extend(equally_named_files)
+
+    for file in file_group:
+        contents.remove(file)
+
+    file_group = list(sorted(file_group, key=lambda x: os.path.splitext(x)[-1]))
+    file_group.insert(0, document_filename)
+
+    return file_group
+
 
 def read_data(folder: str, files: List[str]) -> List[Work]:
     """
@@ -92,6 +130,7 @@ def read_data(folder: str, files: List[str]) -> List[Work]:
 
     parsed_paths = sorted(parsed_paths, key=itemgetter(1))
     groups = groupby(parsed_paths, key=lambda x: x[1])
+
     for key, doc_name_tuple in groups:  # groupby(existing_paths, key=lambda x: x[:x.rfind('.')])
         documents = [doc for doc, basic_name in tuple(doc_name_tuple)]
 
@@ -106,9 +145,10 @@ def read_data(folder: str, files: List[str]) -> List[Work]:
 
         try:
             document = Document(doc_path)  # 'data/162117_б-МЕТЛипу11_2017_7.docx'
-        except:
-            print('Ошибка чтения файла')
+        except ValueError:
+            print('Ошибка чтения файла {0}'.format(doc_path))
             continue
+
         first_page_text = []
         complete_first_page_text = []
         for p in document.paragraphs[:50]:

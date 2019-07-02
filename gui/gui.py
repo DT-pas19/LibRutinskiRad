@@ -9,6 +9,7 @@ from document_processor import read_data, get_common_info, save_changes
 from gui.dialog_wrapper import DialogWrapper
 from gui.paperlibroutine import Ui_MainWindow
 from table_models import FileCheckModel, WorkInfoModel
+from pathlib import Path
 
 
 class Program(QtWidgets.QMainWindow):
@@ -18,7 +19,10 @@ class Program(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.file_selection_model = FileCheckModel()
         self.work_info_model = WorkInfoModel()
-        self.common_info = dict.fromkeys(('teacher', 'teacher_duty', 'topic', 'work_type', 'year', 'group', 'group_code', 'faculty', 'chair', 'chair_short', 'study', 'profile', 'variant', 'discipline_code', 'discipline', 'qual'), str())
+        self.common_info = dict.fromkeys((
+                                         'teacher', 'teacher_duty', 'topic', 'work_type', 'year', 'group', 'group_code',
+                                         'faculty', 'chair', 'chair_short', 'study', 'profile', 'variant',
+                                         'discipline_code', 'discipline', 'qual'), str())
         self.common_info['work_type'] = 0
 
         self.dir_name = str()
@@ -31,6 +35,7 @@ class Program(QtWidgets.QMainWindow):
         """
         self.ui.edit_path.editingFinished.connect(self.update_filelist)
         self.ui.btn_file_dialog.clicked.connect(self.call_file_dialog)
+        self.ui.btn_filelist_refresh.clicked.connect(self.update_filelist)
 
         self.ui.table_files_view.setModel(self.file_selection_model)
         self.ui.table_files_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -43,16 +48,22 @@ class Program(QtWidgets.QMainWindow):
         # self.ui.table_students_view.horizontalHeader().setMaximumWidth(500)
         # @see stackoverflow.com/questions/3433664/how-to-make-sure-columns-in-qtableview-are-resized-to-the-maximum
 
-        tab_switch = lambda x: self.ui.tab_widget.setCurrentIndex(x)
         # на уровень выше, нужно при работе с файлом перелистывать на начало
         # self.ui.btn_start_reading.clicked.connect(lambda checked, i=1: tab_switch(i))
         self.ui.btn_start_reading.clicked.connect(self.parse_documents)
-        self.ui.btn_back_choosing.clicked.connect(lambda checked, i=0: tab_switch(i))
+        self.ui.btn_back_choosing.clicked.connect(self.disable_switch_tab)
 
         self.ui.btn_change.clicked.connect(self.open_common_info_dialog)
         self.ui.btn_save.clicked.connect(self.save_changes)
         self.ui.btn_clipboard_save.clicked.connect(self.clipboard_copy)
         self.ui.btn_clipboard_open.clicked.connect(self.clipboard_paste)
+
+    def disable_switch_tab(self):
+        self.ui.tab_widget.setCurrentIndex(0)
+        self.ui.tab_students.setEnabled(False)
+
+    def check_work_existence(self, files):
+        return len(files) > 0
 
     def parse_documents(self):
         """
@@ -60,20 +71,23 @@ class Program(QtWidgets.QMainWindow):
         :return:
         """
         necessary_data = self.file_selection_model.get_data()
-        self.ui.tab_widget.setCurrentIndex(1)  # при переключении вкладки флажки в таблице сбрасываются и везде False
+
         self.file_selection_model.restore_data(necessary_data)
+
         print('Начинаем чтение')
         files = [file for file, is_checked in necessary_data if is_checked]
         folder = self.ui.edit_path.text()
         result = read_data(folder=folder, files=files)
-        self.work_info_model.clear()
-        self.work_info_model.append(result)
 
-        group_info = get_common_info(result)
-        self.render_common_info(group_info)
+        if self.check_work_existence(files):
+            self.ui.tab_widget.setCurrentIndex(1)  # при переключении вкладки флажки в таблице сбрасываются в False
+            self.ui.tab_students.setEnabled(True)
 
-        # TODO заполнение шаблона
-        # TODO в меню - копировать, вставить + возможность сохранять html-ку из таблицы в файл
+            self.work_info_model.clear()
+            self.work_info_model.append(result)
+
+            group_info = get_common_info(result)
+            self.render_common_info(group_info)
 
     def render_common_info(self, new_group_info=dict()) -> Dict[str, str]:
         """
@@ -118,7 +132,7 @@ class Program(QtWidgets.QMainWindow):
 
         data_desc = 'Преподаватель {teacher_duty} {teacher}\nТема {topic:.50}\n' \
                     'Тип работы {work_type}\nГод {year}\nГруппа {group:.25}\n' \
-                    '\nКод группы {group_code}\nФакультет {faculty:.50}\nКафедра {chair:.50}'\
+                    '\nКод группы {group_code}\nФакультет {faculty:.50}\nКафедра {chair:.50}' \
             .format(**cache)
         self.ui.lbl_common_info.setText(data_desc)
         return cache
@@ -134,6 +148,7 @@ class Program(QtWidgets.QMainWindow):
             self.work_info_model.set_common_data(self.common_info)
             self.render_common_info()
             print(result)
+
         change_dialog.ui.btn_apply.accepted.connect(accept_changes)
 
     def update_filelist(self):
@@ -145,10 +160,10 @@ class Program(QtWidgets.QMainWindow):
             return
         self.dir_name = path
 
-        contents = [item for item in os.listdir(path) if os.path.isfile(os.path.join(path, item))]
+        contents = [item for item in os.listdir(path) if os.path.isfile(os.path.join(path, item))
+                    and item.endswith('.docx')]
         self.file_selection_model.clear()
         self.file_selection_model.append(contents)
-        # checkbox в таблице + обновление модели
 
     def call_file_dialog(self):
         """
@@ -158,9 +173,12 @@ class Program(QtWidgets.QMainWindow):
         options = QFileDialog.Options() | QFileDialog.DontUseNativeDialog | \
                   QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks
 
-        prev_chosen = self.ui.edit_path.text()
-        prev_chosen = prev_chosen if os.path.exists(prev_chosen) and os.path.isdir(prev_chosen) else os.getcwd()
-        dir_name = QFileDialog.getExistingDirectory(self, "Укажите папку с работами", prev_chosen, options=options)
+        home_dir = str(Path.home())
+        chosen_dir = self.ui.edit_path.text()
+        chosen_dir = chosen_dir if os.path.exists(chosen_dir) and os.path.isdir(chosen_dir) else home_dir
+
+        dir_name = QFileDialog.getExistingDirectory(self, 'Укажите папку с работами', chosen_dir, options=options)
+
         if dir_name:
             print("Выбрана папка {}".format(dir_name))
             self.ui.edit_path.setText(dir_name)
@@ -169,21 +187,24 @@ class Program(QtWidgets.QMainWindow):
     def save_changes(self):
         if len(self.dir_name) == 0 or not os.path.exists(self.dir_name) or not os.path.isdir(self.dir_name):
             QMessageBox.question(self, 'Необходимы дополнительные данные',
-                                          "Необходим полный путь к существующей папке", QMessageBox.Apply)
+                                 'Необходим полный путь к существующей папке', QMessageBox.Apply)
             return
+
         works = self.work_info_model.get_data()
 
         title_change_choice = QMessageBox.question(self, 'Скорректировать титульные листы?',
-                             "Изменить титульные листы в соответствие с данными из таблицы?", QMessageBox.Yes | QMessageBox.No)
+                                                   'Изменить титульные листы в соответствие с данными из таблицы?',
+                                                   QMessageBox.Yes | QMessageBox.No)
 
-        save_changes(works, self.common_info, self.dir_name, change_title_pages=title_change_choice == QMessageBox.Yes, call_dialog_method=self.question_rewrite)
+        save_changes(works, self.common_info, self.dir_name, change_title_pages=title_change_choice == QMessageBox.Yes,
+                     call_dialog_method=self.question_rewrite)
         self.work_info_model.clear()
         self.work_info_model.append(works)
 
     def question_rewrite(self, path, student) -> QMessageBox.StandardButton:
         choice = QMessageBox.question(self, 'Файл с этим именем существует',
-                             "Перезаписать файл {0} с работой \'{1}\'?".format(path, student),
-                             QMessageBox.Yes | QMessageBox.No | QMessageBox.Abort)
+                                      "Перезаписать файл {0} с работой \'{1}\'?".format(path, student),
+                                      QMessageBox.Yes | QMessageBox.No | QMessageBox.Abort)
         return choice
 
     def clipboard_copy(self):
@@ -217,7 +238,9 @@ if __name__ == "__main__":
         mime_data.setHtml(clipboard_data)
         app.clipboard().setMimeData(mime_data)
 
+
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = Program()
     MainWindow.show()

@@ -30,6 +30,17 @@
          <widget class="QLineEdit" name="edit_path"/>
         </item>
         <item>
+         <widget class="QPushButton" name="btn_filelist_refresh">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="icons/icons.qrc">
+            <normaloff>:/refresh/view-refresh.svg</normaloff>:/refresh/view-refresh.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="btn_file_dialog">
           <property name="maximumSize">
            <size>
@@ -38,7 +49,11 @@
            </size>
           </property>
           <property name="text">
-           <string>...</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="icons/icons.qrc">
+            <normaloff>:/open/folder-open.svg</normaloff>:/open/folder-open.svg</iconset>
           </property>
          </widget>
         </item>
@@ -58,23 +73,36 @@
            <widget class="QTableView" name="table_files_view"/>
           </item>
           <item row="1" column="2">
-           <widget class="QPushButton" name="btn_start_reading">
+           <widget class="QToolButton" name="btn_start_reading">
             <property name="maximumSize">
              <size>
-              <width>50</width>
+              <width>90</width>
               <height>16777215</height>
              </size>
             </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
             <property name="text">
              <string>Далее</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/icons.qrc">
+              <normaloff>:/direction/go-next.svg</normaloff>:/direction/go-next.svg</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
         <widget class="QWidget" name="tab_students">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <attribute name="title">
-          <string>Студенты</string>
+          <string>Работы</string>
          </attribute>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
@@ -84,8 +112,51 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="0" colspan="5">
+           <widget class="QTableView" name="table_students_view"/>
+          </item>
+          <item row="2" column="1" rowspan="2">
+           <widget class="QToolButton" name="btn_back_choosing">
+            <property name="maximumSize">
+             <size>
+              <width>70</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Назад</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/icons.qrc">
+              <normaloff>:/direction/go-previous.svg</normaloff>:/direction/go-previous.svg</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3" rowspan="2">
+           <widget class="QToolButton" name="btn_save">
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Сохранить</string>
+            </property>
+            <property name="icon">
+             <iconset resource="icons/icons.qrc">
+              <normaloff>:/actions/document-save.svg</normaloff>:/actions/document-save.svg</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="4">
-           <widget class="QPushButton" name="btn_clipboard_save">
+           <widget class="QToolButton" name="btn_clipboard_save">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -95,54 +166,46 @@
             <property name="text">
              <string>В буфер обмена</string>
             </property>
+            <property name="icon">
+             <iconset resource="icons/icons.qrc">
+              <normaloff>:/clipboard/edit-copy.svg</normaloff>:/clipboard/edit-copy.svg</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="5">
-           <widget class="QTableView" name="table_students_view"/>
-          </item>
           <item row="3" column="4">
-           <widget class="QPushButton" name="btn_clipboard_open">
+           <widget class="QToolButton" name="btn_clipboard_open">
             <property name="text">
              <string>Из буфера обмена</string>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="3" rowspan="2">
-           <widget class="QPushButton" name="btn_save">
-            <property name="maximumSize">
-             <size>
-              <width>80</width>
-              <height>16777215</height>
-             </size>
+            <property name="icon">
+             <iconset resource="icons/icons.qrc">
+              <normaloff>:/clipboard/edit-paste.svg</normaloff>:/clipboard/edit-paste.svg</iconset>
             </property>
-            <property name="text">
-             <string>Сохранить</string>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
             </property>
            </widget>
           </item>
           <item row="2" column="2" rowspan="2">
-           <widget class="QPushButton" name="btn_change">
+           <widget class="QToolButton" name="btn_change">
             <property name="maximumSize">
              <size>
-              <width>120</width>
+              <width>135</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="text">
              <string>Изменить общее</string>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="1" rowspan="2">
-           <widget class="QPushButton" name="btn_back_choosing">
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
+            <property name="icon">
+             <iconset resource="icons/icons.qrc">
+              <normaloff>:/actions/document-edit.svg</normaloff>:/actions/document-edit.svg</iconset>
             </property>
-            <property name="text">
-             <string>Назад</string>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
             </property>
            </widget>
           </item>
@@ -160,12 +223,14 @@
      <x>0</x>
      <y>0</y>
      <width>710</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
