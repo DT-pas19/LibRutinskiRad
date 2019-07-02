@@ -88,5 +88,5 @@ def make_title_page(work: Work, common_info: Dict[str, str]) -> Tuple[str, Docum
     year_par.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     # </editor-fold>
 
-    document_name = '{number}_{group}_{year}_{work_type}.docx'.format(**work)
+    document_name = '{number}_{group}_{year}_{work_type}_1.docx'.format(**work)
     return document_name, document

@@ -18,7 +18,7 @@ from helpers import remove_keywords, get_bracket_less_line, replace_whitespace, 
 from title_page_creation_kit import make_title_page
 
 key_words = {'group': 'групп', 'faculty': 'факультет', 'chair': 'кафедра', 'topic': ('на тему', 'тема'), 'student': ('выполнил', 'студент'), 'qual': ('квалификация', 'степень'), 'profile': 'профиль', 'variant': 'вариант', 'discipline': 'дисциплин', 'study': ('направлени', 'подготовки')}
-numbered_filename_regexr = '\d{4,}_[бсма]-[А-Я]{3,5}\d{2,}_\d{4}_\d{1,2}_\d{1,2}'
+numbered_filename_regexr = '\d{4,}_[бсма1]+-?[А-Я]{3,5}([зипу-]+)?\d{2,}_\d{4}_\d{1,2}_\d{1,2}'
 
 def get_paragraph(key: str, text: List[str], include_next: Tuple[bool, int]=(False, 0)) -> str:
     """ модифицировать для tuple, получать доп поля
@@ -67,7 +67,7 @@ def get_line(substr: str, text: List[str]) -> int:
         line_number = next(iter(line_info))
     return line_number
 
-# TODO refresh file list button, filename change, manual
+# TODO filename change, manual
 
 
 def get_associated_works(files: List[str], contents: List[str]):
@@ -81,6 +81,14 @@ def get_associated_works(files: List[str], contents: List[str]):
 
 
 def get_associated_work_filenames(document_filename: str, contents: List[str]):
+    """
+    Определяет и возвращает перечень связанных работ
+    Например, docx + xlsx
+    Работает, если файлы имеют одни и те же наименования, или имеют одиновые префиксы до '_1', '_2', ...
+    :param document_filename: имя файла документа .docx
+    :param contents: содержимое папки, имена файлов
+    :return:
+    """
     local_document_filename = os.path.split(document_filename)[-1]
     extensionless_filename = os.path.splitext(local_document_filename)[0]
     file_group = []
@@ -112,59 +120,30 @@ def read_data(folder: str, files: List[str]) -> List[Work]:
     :param files: файлы документов
     :return: перечень работ
     """
-    full_paths = [os.path.join(folder, file) for file in files]
-    existing_ones = list(filter(lambda x: os.path.exists(x), full_paths))
-    if len(existing_ones) == 0:
+    contents = [item for item in os.listdir(folder) if os.path.isfile(os.path.join(folder, item))]
+    works = get_associated_works(files, contents)
+
+    if len(contents) == 0:
         return
 
     parsed_info = []
-    existing_paths = sorted(existing_ones, key=itemgetter(0))
-    parsed_paths = list()
-
-    for path in existing_paths:
-        local_path = os.path.split(path)[-1]
-        basic_name = os.path.splitext(local_path)[0]
-        if re.match('_\d{2}', basic_name[-3:]):
-            basic_name = basic_name[:-3]
-        parsed_paths.append((path, basic_name))
-
-    parsed_paths = sorted(parsed_paths, key=itemgetter(1))
-    groups = groupby(parsed_paths, key=lambda x: x[1])
-
-    for key, doc_name_tuple in groups:  # groupby(existing_paths, key=lambda x: x[:x.rfind('.')])
-        documents = [doc for doc, basic_name in tuple(doc_name_tuple)]
-
-        # documents = list(documents)
-        if len(documents) == 1:
-            doc_path = next(iter(documents))
-        elif len(documents) > 1:
-            found_docs = [doc for doc in documents if doc.endswith('.docx')]
-            if len(found_docs) == 0:
-                continue
-            doc_path = next(iter(found_docs))
-
+    for documents in works:
         try:
-            document = Document(doc_path)  # 'data/162117_б-МЕТЛипу11_2017_7.docx'
+            document = Document(os.path.join(folder, documents[0]))
         except ValueError:
-            print('Ошибка чтения файла {0}'.format(doc_path))
+            print('Ошибка чтения файла {0}'.format(documents[0]))
             continue
 
-        first_page_text = []
-        complete_first_page_text = []
-        for p in document.paragraphs[:50]:
-            complete_first_page_text.append(p.text)
-            if len(p.text) > 0:
-                first_page_text.append(p.text)
-
+        first_page_text = get_document_first_page(document)
         first_page_text_str = '\n'.join(first_page_text)
+
         multi_value_keys = [k for key in key_words.values() if isinstance(key, tuple) for k in key]
         single_value_keys = [key for key in key_words.values() if isinstance(key, str)]
         key_words_values = multi_value_keys + single_value_keys
         contain_check = [key.lower() in first_page_text_str.lower() for key in key_words_values]
 
-        local_doc_paths = [os.path.split(doc)[-1] for doc in documents]
         if not any(contain_check):
-            doc_info = Work(files=local_doc_paths)
+            doc_info = Work(files=documents)
             parsed_info.append(doc_info)
         else:
             faculty_raw = get_paragraph('faculty', first_page_text)
@@ -193,7 +172,7 @@ def read_data(folder: str, files: List[str]) -> List[Work]:
             if len(number_gr) > 0:
                 number = next(iter(number_gr))
             else:
-                file_name = os.path.split(key)[1]
+                file_name = os.path.split(documents[0])[1]
                 number_gr = [part for part in re.split('[_ ]', file_name) if part.isnumeric() and len(part) >= 6]
                 number = next(iter(number_gr)) if len(number_gr) > 0 else '0'
 
@@ -258,21 +237,28 @@ def read_data(folder: str, files: List[str]) -> List[Work]:
             doc_info = Work(student=student_info_raw,
                             number=number, topic=topic, faculty=faculty,
                             chair=chair, group=(group, study[0]), year=year,
-                            files=local_doc_paths, study=study[1], profile=profile,
+                            files=documents, study=study[1], profile=profile,
                             discipline=(discipline, discipline_code), variant=variant,
                             qualification=qual)
-            doc_info.lines['student'] = get_line(student_info_raw, complete_first_page_text)
-            doc_info.lines['faculty'] = get_line(faculty, complete_first_page_text)
-            doc_info.lines['chair'] = get_line(chair_raw, complete_first_page_text)
-            doc_info.lines['topic'] = get_line('на тему:', complete_first_page_text)
-            doc_info.lines['group'] = get_line(group, complete_first_page_text)
+            doc_info.lines['student'] = get_line(student_info_raw, first_page_text)
+            doc_info.lines['faculty'] = get_line(faculty, first_page_text)
+            doc_info.lines['chair'] = get_line(chair_raw, first_page_text)
+            doc_info.lines['topic'] = get_line('на тему:', first_page_text)
+            doc_info.lines['group'] = get_line(group, first_page_text)
             doc_info.lines['topic'] = doc_info.lines['topic'] + 1 if doc_info.lines['topic'] != -1 else -1
-            doc_info.lines['year'] = get_line(year_info, complete_first_page_text)
+            doc_info.lines['year'] = get_line(year_info, first_page_text)
 
             parsed_info.append(doc_info)
-    # + number of line, where to find, dict + save btn
     print('That array of files was read')
     return parsed_info
+
+
+def get_document_first_page(document):
+    first_page_text = []
+    for p in document.paragraphs[:50]:
+        if len(p.text) > 0:
+            first_page_text.append(p.text)
+    return first_page_text
 
 
 def define_line_links(doc_info: Work, search_source: List[str]=list()):
@@ -391,10 +377,10 @@ def save_changes(works: List[Work], common_info: Dict[str, str], dir_path: str, 
 
         if len(existing_files) > 1:
             other_files = list(list(filter(lambda x: not x.endswith('docx'), existing_files)))
-            number = 1
+            number = 2
             for file in other_files:
                 ext = os.path.splitext(file)[-1]
-                new_name = '{0}_{1:02}{2}'.format(document_title[:-5], number, ext)
+                new_name = '{0}_{1:2}{2}'.format(document_title[:-5], number, ext)  # '{0}_{1:02}{2}'
                 shutil.copy2(file, os.path.join(folder_path, new_name))
                 renamed_file_paths.append(new_name)
                 number += 1

@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 class Program(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, app: QtWidgets.QApplication):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -27,6 +27,7 @@ class Program(QtWidgets.QMainWindow):
 
         self.dir_name = str()
         self.setup_widgets()
+        self.app = app
 
     def setup_widgets(self):
         """
@@ -217,7 +218,7 @@ class Program(QtWidgets.QMainWindow):
         mime_data = QMimeData()
         mime_data.setText(clipboard_data)
         mime_data.setHtml(clipboard_data)
-        app.clipboard().setMimeData(mime_data)
+        self.app.clipboard().setMimeData(mime_data)
 
     def clipboard_paste(self):
         mime_data = app.clipboard().mimeData()
@@ -231,17 +232,9 @@ class Program(QtWidgets.QMainWindow):
 
 
 if __name__ == "__main__":
-    def set_clipboard(clipboard_data: str):
-        if not isinstance(clipboard_data, str) or len(clipboard_data) == 0:
-            return
-        mime_data = QMimeData()
-        mime_data.setHtml(clipboard_data)
-        app.clipboard().setMimeData(mime_data)
-
-
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = Program()
+    MainWindow = Program(app)
     MainWindow.show()
     sys.exit(app.exec_())
