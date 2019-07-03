@@ -18,7 +18,7 @@ from helpers import remove_keywords, get_bracket_less_line, replace_whitespace, 
 from title_page_creation_kit import make_title_page
 
 key_words = {'group': 'групп', 'faculty': 'факультет', 'chair': 'кафедра', 'topic': ('на тему', 'тема'), 'student': ('выполнил', 'студент'), 'qual': ('квалификация', 'степень'), 'profile': 'профиль', 'variant': 'вариант', 'discipline': 'дисциплин', 'study': ('направлени', 'подготовки')}
-numbered_filename_regexr = '\d{4,}_[бсма1]+-?[А-Я]{3,5}([зипу-]+)?\d{2,}_\d{4}_\d{1,2}_\d{1,2}'
+numbered_filename_regexr = '\d{4,}_[бсма1]+-?[А-Я]{3,5}([зипу\-_]+)?\d{2,}_\d{4}_\d{1,2}_\d{1,2}'
 
 def get_paragraph(key: str, text: List[str], include_next: Tuple[bool, int]=(False, 0)) -> str:
     """ модифицировать для tuple, получать доп поля
@@ -380,7 +380,7 @@ def save_changes(works: List[Work], common_info: Dict[str, str], dir_path: str, 
             number = 2
             for file in other_files:
                 ext = os.path.splitext(file)[-1]
-                new_name = '{0}_{1:2}{2}'.format(document_title[:-5], number, ext)  # '{0}_{1:02}{2}'
+                new_name = '{0}_{1:1}{2}'.format(document_title[:-5], number, ext)  # '{0}_{1:02}{2}'
                 shutil.copy2(file, os.path.join(folder_path, new_name))
                 renamed_file_paths.append(new_name)
                 number += 1
