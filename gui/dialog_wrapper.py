@@ -58,12 +58,6 @@ class DialogWrapper(QtWidgets.QDialog):
         if exists('chair_short'):
             self.ui.edit_chair_short.setText(data['chair_short'])
 
-        if exists('study'):
-            self.ui.edit_study.setText(data['study'])
-        if exists('profile'):
-            self.ui.edit_profile.setText(data['profile'])
-        if exists('discipline_code'):
-            self.ui.edit_discipline_code.setText(data['discipline_code'])
         if exists('discipline'):
             self.ui.edit_discipline.setText(data['discipline'])
         if exists('qual'):
@@ -81,11 +75,9 @@ class DialogWrapper(QtWidgets.QDialog):
             'faculty': self.ui.edit_fac.text().strip(),
             'chair': self.ui.edit_chair.text().strip(),
             'chair_short': self.ui.edit_chair_short.text().strip(),
-            'study': self.ui.edit_study.text().strip(),
-            'profile': self.ui.edit_profile.text().strip(),
-            'discipline_code': self.ui.edit_discipline_code.text().strip(),
             'discipline': self.ui.edit_discipline.text().strip(),
             'qual': self.ui.edit_qual.text().strip(),
 
         }
+
         return data

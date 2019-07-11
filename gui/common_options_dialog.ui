@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>442</height>
+    <width>550</width>
+    <height>464</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,34 +22,16 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QGridLayout" name="options_layout">
-     <item row="9" column="0">
-      <widget class="QLabel" name="lbl_chair">
+     <property name="horizontalSpacing">
+      <number>4</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>7</number>
+     </property>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_topic">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Кафедра&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="lbl_group_name">
-       <property name="text">
-        <string>Группа</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="lbl_fac">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Фак/инст.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="4">
-      <widget class="QLineEdit" name="edit_group_code">
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Тема работы*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -63,8 +45,59 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QLineEdit" name="edit_teacher_duty"/>
+     <item row="6" column="0">
+      <widget class="QLabel" name="lbl_discipline">
+       <property name="text">
+        <string>Дисциплина</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="lbl_year">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Год сдачи*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QLabel" name="lbl_qual">
+       <property name="text">
+        <string>Квалификация</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="edit_fac">
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QLabel" name="lbl_group_code">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Номер специальности*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="QLineEdit" name="edit_group_code">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="edit_discipline"/>
      </item>
      <item row="0" column="3">
       <widget class="QLabel" name="lbl_teacher_duty">
@@ -73,55 +106,47 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="box_work_type">
-       <property name="minimumSize">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="edit_teacher"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="lbl_group_name">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Группа*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1" colspan="4">
+      <widget class="QLineEdit" name="edit_chair">
+       <property name="maximumSize">
         <size>
-         <width>200</width>
-         <height>0</height>
+         <width>500</width>
+         <height>16777215</height>
         </size>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="edit_teacher"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="lbl_year">
-       <property name="text">
-        <string>Год</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="3">
-      <widget class="QLabel" name="lbl_profile">
-       <property name="text">
-        <string>Профиль</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="lbl_topic">
-       <property name="text">
-        <string>Тема работы</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="lbl_study">
-       <property name="text">
-        <string>Направление</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="0">
+     <item row="9" column="0">
       <widget class="QLabel" name="lbl_edit_short">
        <property name="text">
-        <string>Сокращ. Каф.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Сокращенное название кафедры*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="edit_group_name">
+       <property name="maximumSize">
+        <size>
+         <width>150</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
       <widget class="QLineEdit" name="edit_chair_short">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -137,78 +162,10 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="lbl_work_type">
-       <property name="text">
-        <string>Вид</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="lbl_teacher">
-       <property name="text">
-        <string>Руководитель</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QLineEdit" name="edit_fac">
-       <property name="maximumSize">
-        <size>
-         <width>500</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="edit_group_name">
-       <property name="maximumSize">
-        <size>
-         <width>200</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="4">
-      <widget class="QLineEdit" name="edit_profile"/>
-     </item>
-     <item row="6" column="1">
-      <widget class="QLineEdit" name="edit_study"/>
-     </item>
-     <item row="5" column="3">
-      <widget class="QLabel" name="lbl_group_code">
-       <property name="text">
-        <string>Номер
-специальности</string>
-       </property>
-      </widget>
-     </item>
      <item row="7" column="0">
-      <widget class="QLabel" name="lbl_discipline">
+      <widget class="QLabel" name="lbl_fac">
        <property name="text">
-        <string>Дисциплина</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QLineEdit" name="edit_discipline"/>
-     </item>
-     <item row="7" column="4">
-      <widget class="QLineEdit" name="edit_discipline_code"/>
-     </item>
-     <item row="7" column="3">
-      <widget class="QLabel" name="lbl_discipline_code">
-       <property name="text">
-        <string>Код дисциплины</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="3">
-      <widget class="QLabel" name="lbl_qual">
-       <property name="text">
-        <string>Квалификация</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Институт*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -222,13 +179,37 @@
      <item row="3" column="4">
       <widget class="QLineEdit" name="edit_qual"/>
      </item>
-     <item row="9" column="1" colspan="4">
-      <widget class="QLineEdit" name="edit_chair">
-       <property name="maximumSize">
+     <item row="8" column="0">
+      <widget class="QLabel" name="lbl_chair">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Кафедра&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_teacher">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Руководитель*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="box_work_type">
+       <property name="minimumSize">
         <size>
-         <width>500</width>
-         <height>16777215</height>
+         <width>200</width>
+         <height>0</height>
         </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLineEdit" name="edit_teacher_duty"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="lbl_work_type">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Категория работ*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -238,20 +219,40 @@
   <widget class="QDialogButtonBox" name="btn_apply">
    <property name="geometry">
     <rect>
-     <x>187</x>
-     <y>403</y>
-     <width>301</width>
+     <x>377</x>
+     <y>423</y>
+     <width>151</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="locale">
+    <locale language="Russian" country="Russia"/>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel</set>
+   </property>
+   <property name="centerButtons">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>edit_teacher</tabstop>
+  <tabstop>edit_teacher_duty</tabstop>
+  <tabstop>edit_topic</tabstop>
+  <tabstop>box_work_type</tabstop>
+  <tabstop>edit_qual</tabstop>
+  <tabstop>edit_year</tabstop>
+  <tabstop>edit_group_name</tabstop>
+  <tabstop>edit_group_code</tabstop>
+  <tabstop>edit_discipline</tabstop>
+  <tabstop>edit_fac</tabstop>
+  <tabstop>edit_chair</tabstop>
+  <tabstop>edit_chair_short</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

@@ -380,7 +380,7 @@ def save_changes(works: List[Work], common_info: Dict[str, str], dir_path: str, 
             number = 2
             for file in other_files:
                 ext = os.path.splitext(file)[-1]
-                new_name = '{0}_{1:1}{2}'.format(document_title[:-5], number, ext)  # '{0}_{1:02}{2}'
+                new_name = '{0}_{1:1}{2}'.format(document_title[:-7], number, ext)  # '{0}_{1:02}{2}'
                 shutil.copy2(file, os.path.join(folder_path, new_name))
                 renamed_file_paths.append(new_name)
                 number += 1
